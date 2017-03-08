@@ -1,0 +1,5 @@
+/node_modules/
+/bower_components/
+/bundles/
+/dist/
+.DS_Store

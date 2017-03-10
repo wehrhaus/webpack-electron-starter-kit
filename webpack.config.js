@@ -31,7 +31,9 @@ const config = {
     confPlugins.htmlWebpack,
     confPlugins.namedModules,
     confPlugins.uglifyJs
-  ]
+  ],
+
+  target: 'electron-renderer'
 
 };
 

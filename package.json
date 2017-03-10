@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "description": "Base template for webpack/electron application.",
   "main": "./main.js",
+  "appId": "7Q2d4eb97f",
   "productName": "Webpack Electron Starter Kit",
   "devPort": 8080,
-  "displayMode": "fullscreen",
+  "displayMode": "standard",
   "bundlePlatforms": "darwin,win32",
   "scripts": {
     "bundler": "npm run deploy && electron-packager . $npm_package_bundleName --platform=$npm_package_bundlePlatforms --out=./bundles --overwrite",

@@ -1,19 +1,30 @@
 const electron = require('electron');
+const ipcMain = electron.ipcMain;
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const path = require('path');
 const url = require('url');
+const pkg = require('./package.json');
 
-const displayMode = process.env.DISPLAY_MODE || 'standard';
+const deskmetrics = require('deskmetrics');
+
+const displayMode = pkg.DISPLAY_MODE || 'standard';
 
 let MainWindow;
+
+deskmetrics.start({
+  appId: pkg.appId
+})
+.then(() => {
+  deskmetrics.setProperty('version', pkg.version);
+});
 
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     width: 640,
     height: 480,
     frame: false,
-    fullscreen: true,
+    fullscreen: displayMode === 'fullscreen',
     transparent: false
   });
 
@@ -66,4 +77,18 @@ app.on('activate', function () {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+ipcMain.on('analytics', (evt, ...body) => {
+  let evtName = body.shift();
+  console.log(`evtName: ${evtName}`);
+  console.log(`body: ${body}`);
+  deskmetrics.send(evtName, body)
+    .then((res) => {
+      evt.sender.send('analyticsSuccess', res);
+    })
+    .catch((err) => {
+      evt.sender.send('analyticsError', err);
+    })
+
 });
